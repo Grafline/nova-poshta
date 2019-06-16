@@ -1,10 +1,10 @@
 # Nova Poshta 1.0
-Пакет для Laravel 5.0 создающий форму для работы с API Новой Почты.
+Пакет для Laravel версии 5.0 и выше, создающий форму для работы с API Новой Почты.<br>
 Предполагается наличие базы для работы с пакетом.
 
 ## Установка
 
-в composer.json необходимо добавит в сецию "repositories"
+в composer.json необходимо добавить в сецию "repositories"
 
 ```
  "repositories": [
@@ -14,14 +14,14 @@
         }
     ],
 ```
-  и в секцию "require"
+  в секцию "require"
   ```
     "require": {
             "grafline/nova-poshta": "dev-master"
         },
-   ```     
+  ```     
   
-  и запустить из командной строки команду ``php composer.phar install`` или ``php composer.phar update``
+  и запустить из командной строки команду ``php composer install`` или ``php composer update``
   
  Добавить в config/app.php в секцию 'providers'
   ```
@@ -31,22 +31,26 @@
  
  ```
    php artisan vendor:publish --provider="Grafline\NovaPoshta\NovaPoshtaServiceProvider" --tag=config
-   ```
+ ```
    В первую очередь необходимо указать соединение с базой для работы с Новой Почтой ``db_connect``<br>
    а также указать ``delivery_id`` это id для переключения на работу с Новой Почтой.
    
    Также необходимо опубликовать файлы js и css и подключить соответствующим образом к проекту.
      
-      ```
+   ```
       php artisan vendor:publish --provider="Grafline\NovaPoshta\NovaPoshtaServiceProvider" --tag=css
       
       php artisan vendor:publish --provider="Grafline\NovaPoshta\NovaPoshtaServiceProvider" --tag=js
-      ```
+   ```
    
   В представлении пакет можно подключить таким образом:
 
   ```
   {!! \Grafline\NovaPoshta\Facades\NovaPoshta::getForm() !!}
+  ```
+  Если опубликованы представления то можно так:
+  ```
+    @include('nova_poshta.index')
   ```
 
 ## Настройка
@@ -57,7 +61,7 @@
    php artisan vendor:publish --provider="Grafline\NovaPoshta\NovaPoshtaServiceProvider" --tag=views
    ```
    
-   Также можно вносить правки по надобности в опублиеованные файлы js и css
+   Также можно вносить правки по надобности в опубликованные файлы js и css
  
 
 
