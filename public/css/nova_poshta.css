@@ -1,0 +1,30 @@
+.nova_poshta{
+    cursor: pointer;
+    width: 100%;
+}
+
+.nova_poshta .input-group{
+    margin-top: 5px;
+}
+
+#nova_poshta_warehouse{
+    display: none;
+    width: 100%;
+}
+
+.nova_poshta ul{
+    margin: 0;
+    padding: 0;
+    border: 1px solid #cccccc;
+}
+
+.nova_poshta ul li{
+    list-style-type: none;
+    padding: 0 5px 0 5px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+}
+
+.nova_poshta ul li:hover{
+    background-color: #e8e8e8;
+}
