@@ -3,9 +3,11 @@ $(document).ready(function () {
     $('.basket select[name=delivery]').change(function () {
         var delivery_np = $('.nova_poshta').data('dnp');
         if ($(this).val() == delivery_np) {
+            $('#city').hide();
             $('.nova_poshta').show();
         } else {
             $('.nova_poshta').hide();
+            $('#city').show();
         }
         return false;
     });
