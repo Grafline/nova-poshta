@@ -16,6 +16,9 @@
     margin: 0;
     padding: 0;
     border: 1px solid #cccccc;
+    max-height: 140px;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .nova_poshta ul li{

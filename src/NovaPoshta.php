@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\DB;
 
 class NovaPoshta
 {
-
     protected $connect;
     protected $locate;
     protected $delivery_np;
@@ -38,57 +37,74 @@ class NovaPoshta
         return view('nova_poshta::item_list');
     }
 
-    public function getCities(Request $request){
-
+    protected function description(){
         if($this->locate == 'ru'){
-            $field = 'description_ru';
-        }else{
-            $field = 'description';
+            return 'description_ru';
         }
+        return 'description';
+    }
 
-        $key = $request->key;
-
-       $cities = $this->connect
-           ->table('cities')
-           ->where($field, 'LIKE', $key.'%')
-           ->get();
-
+    protected function getResult($items){
+        $field = $this->description();
         $htm = '';
-        foreach ($cities as $city){
-            $htm .= view('nova_poshta::item_list', ['item'=> $city, 'field'=>$field]);
+        foreach ($items as $item){
+            $htm .= view('nova_poshta::item_list', ['item'=> $item, 'field'=>$field]);
         }
 
         return json_encode([
-            'first' => $cities[0]->$field,
+            'first' => $items[0]->$field,
             'options' => $htm,
         ]);
     }
 
+    public function getCities(Request $request){
+
+        $field = $this->description();
+        $key = $request->key;
+
+        $cities = $this->connect
+            ->table('cities')
+            ->where($field, 'LIKE', $key.'%')
+            ->get(['ref', $field]);
+
+        return $this->getResult($cities);
+    }
+
     public function getWarehouses(Request $request){
 
-        if($this->locate == 'ru'){
-            $field = 'description_ru';
-        }else{
-            $field = 'description';
-        }
-
+        $field = $this->description();
         $ref = $request->ref;
 
         $warehouses = $this->connect
             ->table('warehouses')
             ->where('cityref', $ref)
-            ->get();
+            ->get(['ref', $field]);
 
-        $htm = '';
-        foreach ($warehouses as $warehouse){
-            $htm .= view('nova_poshta::item_list', ['item'=> $warehouse, 'field'=>$field]);
+        return $this->getResult($warehouses);
+    }
+
+    public function getWarehousesKey(Request $request){
+
+        $field = $this->description();
+        $ref = $request->ref;
+        $key = $request->key;
+
+        $query = $this->connect
+            ->table('warehouses')
+            ->where('cityref', $ref);
+
+        if ((int)$key > 0){
+            $query->where(function ($query) use ($field, $key){
+                $query->where($field, 'LIKE', '%№'.$key.'%')
+                    ->orWhere($field, 'LIKE', '%№ '.$key.'%');
+            });
+        }else{
+            $query->where($field, 'like', '%'.$key.'%');
         }
 
-        return json_encode([
-            'first' => $warehouses[0]->$field,
-            'options' => $htm,
-            ]);
+        $warehouses = $query->get(['ref', $field]);
 
+        return $this->getResult($warehouses);
     }
 
 }

@@ -27,7 +27,6 @@ $(document).ready(function () {
         $('.nova_poshta #np_city').val(val);
         $('.nova_poshta #np_city_ref').val(ref);
         $(this).parent().hide();
-
         $('.nova_poshta #nova_poshta_warehouse').show();
         $.post('/ajax_get_warehouses', {'_token': token, 'ref': ref}, function (data) {
             if (data) {
@@ -37,15 +36,11 @@ $(document).ready(function () {
         }, 'json');
     });
 
-
     $(document).on("input", ".nova_poshta #np_city", function () {
-
         var input = $(this);
         var key = input.val();
         if (key.length > 2) {
-
             var token = $('input[name=_token]').val();
-
             $.post('/ajax_get_cites', {'_token': token, 'key': key}, function (data) {
                 if (data) {
                     input.val(data.first);
@@ -58,10 +53,23 @@ $(document).ready(function () {
     $(document).on("click", ".nova_poshta #nova_poshta_warehouse ul li", function () {
         var ref = $(this).data('ref');
         var val = $(this).html();
-
         $('.nova_poshta #np_warehouse').val(val);
         $('.nova_poshta #np_warehouse_ref').val(ref);
         $(this).parent().hide();
     });
 
+    $(document).on("input", ".nova_poshta #np_warehouse", function (){
+        var ref = $('.nova_poshta #np_city_ref').val();
+        var input = $(this);
+        var key = input.val();
+        if (parseInt(key) > 0 || key.length > 2) {
+            var token = $('input[name=_token]').val();
+            $.post('/ajax_get_warehouses_key', {'_token': token, 'ref': ref, 'key': key}, function (data) {
+                if (data) {
+                    input.val(data.first);
+                    $('.nova_poshta #nova_poshta_warehouse ul.list').html(data.options);
+                }
+            }, 'json');
+        }
+    });
 });
