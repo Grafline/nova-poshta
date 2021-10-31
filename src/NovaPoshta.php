@@ -65,6 +65,7 @@ class NovaPoshta
         $cities = $this->connect
             ->table('cities')
             ->where($field, 'LIKE', $key.'%')
+            ->orderBy($field, 'asc')
             ->get(['ref', $field]);
 
         return $this->getResult($cities);
