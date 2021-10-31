@@ -79,7 +79,7 @@ class NovaPoshta
         $warehouses = $this->connect
             ->table('warehouses')
             ->where('cityref', $ref)
-            ->orderBy($field, 'asc')
+            ->orderBy('num', 'asc')
             ->get(['ref', $field]);
 
         return $this->getResult($warehouses);
